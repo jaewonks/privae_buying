@@ -6,16 +6,16 @@ export const getOrders = async () => {
     const response = await axios({
       url: `${apiUrl}/api/orders`,
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
     })
-    if(response.statusText !== 'OK') {
-      throw new Error(reponse.data.message)
+    if(!response || response.statusText !== 'OK') {
+      throw new Error(reponse.message)
     } // 응답 상태가 ok가 아니면 리턴되는 에러
-    return response.data;
+    return response;
   } catch (err) {
     console.log(err);
-    return { error: err.reponse.message || err.message }
+    return { error: response.message || err.message }
   }
 };
+
+
+
