@@ -15,5 +15,8 @@
     "webpack-dev-server": "^3.11.2"
   },
   "description": "",
-  "dependencies": {}
+  "dependencies": {
+    "axios-multi-api": "^1.2.1",
+    "tslib": "^2.3.0"
+  }
 }

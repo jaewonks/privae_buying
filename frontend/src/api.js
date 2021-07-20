@@ -9,8 +9,24 @@ export const getOrders = async () => {
     })
     if(!response || response.statusText !== 'OK') {
       throw new Error(reponse.message)
-    } // 응답 상태가 ok가 아니면 리턴되는 에러
+    } 
     return response;
+  } catch (err) {
+    console.log(err);
+    return { error: response.message || err.message }
+  }
+};
+
+export const getProduct = async (id) => {
+  try {
+    const response = await axios({
+      url: `${apiUrl}/api/buying/${id}`,
+      method: 'GET',
+    })
+    if(!response || response.statusText !== 'OK') {
+      throw new Error(reponse.message)
+    } 
+    return response.data.product.model_name;
   } catch (err) {
     console.log(err);
     return { error: response.message || err.message }

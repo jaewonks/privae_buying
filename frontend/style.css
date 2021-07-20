@@ -7,8 +7,17 @@ body {
   margin: 0;
   border: 0;
 }
+
+.ori_price {
+  width: 40px;
+}
+.order_num {
+  width: 60px;
+}
+
 table {
   font-size: 13px;
+  border-collapse: collapse;
 }
 
 thead {
@@ -16,34 +25,49 @@ thead {
   background-color: darkgray;
 }
 
-thead tr td:nth-child(21), 
-thead tr td:nth-child(22), 
-thead tr td:nth-child(23),
-thead tr td:nth-child(24) {
+table.order thead tr td:nth-child(14), 
+table.order thead tr td:nth-child(15), 
+table.order thead tr td:nth-child(16),
+table.order thead tr td:nth-child(17) {
   background-color: yellow;
-  width: 200px;
 }
 
-thead tr td:nth-child(8) {
+table.order thead tr td:nth-child(4) {
+  width: 120px;
+}
+
+table.order thead tr td:nth-child(7) {
   text-align: center;
   width: 50px;
 }
 
-thead tr td:nth-child(11),
-thead tr td:nth-child(13) {
- width: 200px;
+table.buying thead td {
+  border: 1px solid black;
 }
 
-tbody tr {
-  border-bottom: 3px solid gray;
+table tbody tr {
+  border-bottom: 1px solid gray;
 }
 
-tbody tr td:nth-child(8) {
+table.order tbody tr:nth-child(even) { 
+  background-color: #f4f5f8; 
+} 
+
+tbody tr td {
+  border: 1px solid gray; 
+}
+
+table.order tbody tr td:nth-child(8) {
   text-align: center;
 }
 
+button {
+  margin: 5px 0;
+}
 .container {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
+

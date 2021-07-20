@@ -1,13 +1,15 @@
 const request = require('request');
 
 const mallid = 'londonlabel';
-const code = 'w5oJLx4GKBsjmsEjboGwiB';
+const code = '2NbcGgcnAN8sxZAydC9wjB';
 const redirect_uri = 'https://londonlabel.cafe24.com';
+const refresh_token = 'HsT0c8TAFBzuRzxPBUMMCB';
 
 const client_id = '3Y6Yey8eI0rmOmXm3jQv6A';
 const client_secret = '257Y7tGIC9lvjt3agIev2A';
 
-const payload = `grant_type=authorization_code&code=${code}&redirect_uri=${redirect_uri}`;
+//const payload = `grant_type=authorization_code&code=${code}&redirect_uri=${redirect_uri}`;
+const payload = `grant_type=refresh_token&refresh_token=${refresh_token}`;
 
 const options = {
   method: 'POST',
@@ -25,4 +27,4 @@ request(options, function (error, response, body) {
   console.log(body);
 }); 
 
-//https://londonlabel.cafe24api.com/api/v2/oauth/authorize?response_type=code&client_id=3Y6Yey8eI0rmOmXm3jQv6A&state=jaewonks&redirect_uri=https://londonlabel.cafe24.com&scope=mall.read_order
+//https://londonlabel.cafe24api.com/api/v2/oauth/authorize?response_type=code&client_id=3Y6Yey8eI0rmOmXm3jQv6A&state=jaewonks&redirect_uri=https://londonlabel.cafe24.com&scope=mall.read_order,mall.read_product
