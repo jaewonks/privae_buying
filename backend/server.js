@@ -19,14 +19,24 @@ db.connect((err) => {
 const app = express();
 const request = require("request");
 const mallid = 'londonlabel';
-const access_token = 'YGf9OBzuNivY37EM72OehF';
+const access_token = 'DLZPfpSmEqUJ75nKZSiSZG';
+const getCurrentDate = () => {
+  const date = new Date();
+  const year = date.getFullYear().toString();
+  let month = date.getMonth() + 1;
+  month = month < 10 ? '0' + month.toString() : month.toString();
+  let day = date.getDate();
+  day = day < 10 ? '0' + day.toString() : day.toString();
+  console.log(year+'-'+month+'-'+day)
+  return year+'-'+month+'-'+day;
+} 
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/orders', (req, res) => {
   const options = { 
     method: 'GET',
-    url: `https://${mallid}.cafe24api.com/api/v2/admin/orders?limit=3&start_date=2021-05-01&end_date=2021-07-20&embed=receivers,items`,
+    url: `https://${mallid}.cafe24api.com/api/v2/admin/orders?limit=500&start_date=2021-07-07&end_date=${getCurrentDate()}&embed=receivers,items`,
     headers: {
       'Authorization': `Bearer ${access_token}`,
       'Content-Type': "application/json"

@@ -3,14 +3,13 @@ const HomeScreen = {
     //orderBtn
     document.getElementById('orderBtn')
     .addEventListener('click', () => {
-      document.location.href = '/#/order';
-      console.log('order clicked!'); 
+      document.location.hash = '/order';
     })
     
     //buyingBtn
     document.getElementById('buyingBtn')
     .addEventListener('click', () => {
-      document.location.href = '/#/buying';
+      document.location.hash = '/buying';
       console.log('buying clicked!'); 
     })
   },
@@ -19,8 +18,8 @@ const HomeScreen = {
     return `
     <div class='container'>
       <div><h2>Privae Purchase Management App</h2></div>
-      <div><button id='orderBtn'>Order List</button></div>
-      <div><button id='buyingBtn'>Buying List</button></div>
+      <div><button type='button' id='orderBtn'>Order List</button></div>
+      <div><button type='button' id='buyingBtn'>Buying List</button></div>
     </div>
     `
   }

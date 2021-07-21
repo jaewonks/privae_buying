@@ -9,39 +9,41 @@ const OrderScreen = {
     const orderdata = orderlist.data.orders;
     const getInfo = async (id, index) => {
       const data = await getProduct(id);
-      console.log(data)
-      document.getElementById(`ref${index}`).innerText = data;
+      const img = data.detail_image;
+      const ref = data.model_name;
+      document.getElementById(`ref${index}`).innerText = ref;
+      document.getElementById(`img${index}`).src = img;
     }; 
     
     return `
     <table class='order' cellspacing="0" cellpadding="0">
     <thead>
       <tr>
-        <td>주문번호</td>
-        <td>상품이미지</td>
-        <td>주문상품명</td>
-        <td>색상/사이즈/세금납부</td>
-        <td>수량</td>
-        <td>판매가</td>
-        <td>수령인</td>
-        <td>수령인연락처</td>
-        <td>수령인주소</td>
-        <td>개인통관고유번호</td>
-        <td>상태</td>
-        <td>링크</td>
-        <td>파운드원가</td>
-        <td>Ref.</td>
-        <td>구매처</td>
-        <td>오더넘버</td>
-        <td>구매가격</td>
-        <td>구매일자</td>
+        <th>주문번호</th>
+        <th>상품이미지</th>
+        <th>주문상품명</th>
+        <th>색상/사이즈/세금납부</th>
+        <th>수량</th>
+        <th>판매가</th>
+        <th>수령인</th>
+        <th>수령인연락처</th>
+        <th>수령인주소</th>
+        <th>개인통관고유번호</th>
+        <th>상태</th>
+        <th>링크</th>
+        <th>파운드원가</th>
+        <th>Ref.</th>
+        <th>구매처</th>
+        <th>오더넘버</th>
+        <th>구매가격</th>
+        <th>구매일자</th>
       </tr>
     </thead>
     <tbody id='tbody'>
     ${orderdata?orderdata.map((order, index) => 
       `<tr>
         <td>${order.order_id}</td>
-        <td><img src='' width="120px"></td>
+        <td><img id='img${index}' src='' width="120px"></td>
         <td>${order.items[0].product_name}</td>
         <td>${order.items[0].option_value
           .replaceAll(',','<br/>')

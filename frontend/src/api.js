@@ -26,7 +26,8 @@ export const getProduct = async (id) => {
     if(!response || response.statusText !== 'OK') {
       throw new Error(reponse.message)
     } 
-    return response.data.product.model_name;
+    return response.data.product;
+    //return response.data.product.model_name;
   } catch (err) {
     console.log(err);
     return { error: response.message || err.message }
