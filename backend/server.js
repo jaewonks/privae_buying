@@ -19,7 +19,7 @@ db.connect((err) => {
 const app = express();
 const request = require("request");
 const mallid = 'londonlabel';
-const access_token = 'DLZPfpSmEqUJ75nKZSiSZG';
+const access_token = 'JVlkZDihKtdlSmNIGqft3F';
 const getCurrentDate = () => {
   const date = new Date();
   const year = date.getFullYear().toString();

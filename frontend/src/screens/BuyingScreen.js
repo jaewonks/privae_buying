@@ -52,7 +52,7 @@ const OrderScreen = {
         <td rowspan="3">
           <img id='img${index}' src='' width="120px">
         </td>
-        <td colspan="5">${order.items[0].product_name} (${order.order_id})</td>
+        <td colspan="5">&nbsp;${order.items[0].product_name} (${order.order_id})</td>
       </tr>
       <tr>
         <td>
@@ -91,12 +91,6 @@ const OrderScreen = {
       ).join('\n'):''} 
       </tbody>
       </table>
-      </div>
-      <div class='container'>
-        <div>
-          <button>저장</button>
-          <button>수정</button>
-        </div>
       </div>
     `
   } 

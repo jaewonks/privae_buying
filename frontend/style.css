@@ -1,5 +1,7 @@
 * {
   box-sizing: border-box;
+  font-family: 'Libre Franklin', sans-serif;
+  color: #6c757d;
 }
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -7,7 +9,15 @@ body {
   margin: 0;
   border: 0;
 }
-
+input {
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  box-shadow: 
+    7px 7px 15px rgba(55, 84, 170,.15),
+    -7px -7px 20px rgba(255, 255, 255,1),
+    0px 0px 4px rgba(255, 255, 255,.2); 
+}
 .ori_price {
   width: 40px;
 }
@@ -21,8 +31,7 @@ table {
 }
 
 thead {
-  font-weight: bold;
-  background-color: darkgray;
+  background-color: #727DF4;
 }
 
 table.order thead tr th:nth-child(14), 
@@ -42,11 +51,12 @@ table.order thead tr th:nth-child(7) {
 }
 
 table.buying thead th {
-  border: 1px solid black;
+  border: 1px solid #FEFEFE;
+  color: #fff;
 }
 
 table tbody tr {
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #6c757d;
 }
 
 table.order tbody tr:nth-child(even) { 
@@ -54,11 +64,11 @@ table.order tbody tr:nth-child(even) {
 } 
 
 table.buying tbody tr:nth-child(3n-2) td:nth-child(2) { 
-  background-color: #ceced1a9; 
+  background-color: #C5CAFD; 
 } 
 
 tbody tr td {
-  border: 1px solid gray; 
+  border: 1px solid #FEFEFE; 
 }
 
 table.order tbody tr td:nth-child(8) {
@@ -73,5 +83,58 @@ button {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  background-color: #F9FAFD;
 }
 
+/* homeScreen */
+.home {
+  padding: 100px 0;
+  color: #313b46;
+}
+.home button {
+  margin: 2px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  width: 120px;
+  height: 40px;
+  color: #fff;
+  box-shadow: 0px 5px 8px #b5bfc6; 
+}
+.home button:hover {
+  opacity: 0.7;
+}
+
+.home button#orderBtn {
+  background-color: #727DF4;
+}
+
+.home button#buyingBtn {
+  background-color: #FA5D7C;
+}
+.home h3 {
+  margin: 100px 0;
+}
+.home p {
+  font-size: 6px;
+}
+
+/* buyingScreen */
+.buying button {
+  margin: 2px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  width: 80px;
+  height: 30px;
+  background-color: #fff;
+  color: darkgray;
+  box-shadow: 0px 5px 8px #b5bfc6; 
+}
+.buying button:hover {
+  opacity: 0.7;
+}
+
+footer {
+  color: grey;
+}
