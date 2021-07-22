@@ -7,7 +7,7 @@
     "start": "nodemon --watch backend --exec babel-node backend/server.js",
     "build": "rm -rf dest && babel backend -d dist",
     "serve": "node dist/server.js",
-    "heroku-prebuild": "cd frontend && npm install --dev",
+    "heroku-prebuild": "rm -rf node_modules",
     "heroku-postbuild": "npm run build && cd frontend && npm install && npm run build"
   },
   "author": "Jaewon Kim",
