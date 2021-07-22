@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import config from './config.js';
-import mysql from 'mysql';
-
+/*import mysql from 'mysql';
+ 
 const db = mysql.createConnection({
   host: 'localhost' || '127.0.0.1',
   user: 'root',
@@ -15,7 +15,7 @@ db.connect((err) => {
   if (err) throw err;
   console.log('DB connected!');
 });
-
+*/
 const app = express();
 const request = require("request");
 const mallid = 'londonlabel';
