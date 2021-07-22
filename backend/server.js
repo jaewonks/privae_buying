@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import config from './config.js';
-/*import mysql from 'mysql';
+/*
+import mysql from 'mysql';
  
 const db = mysql.createConnection({
   host: 'localhost' || '127.0.0.1',
@@ -19,7 +20,7 @@ db.connect((err) => {
 const app = express();
 const request = require("request");
 const mallid = 'londonlabel';
-const access_token = 'YfuEBArGV6qbTEAsaUfX5C';
+const access_token = config.ACCESS_TOKEN;
 const getCurrentDate = () => {
   const date = new Date();
   const year = date.getFullYear().toString();
@@ -51,7 +52,6 @@ app.use('/api/orders', (req, res) => {
 })
 
 app.use('/api/buying/:id', (req, res) => {
-  //console.log(req.params.id)
   const id = req.params.id;
   const options = { 
     method: 'GET',
