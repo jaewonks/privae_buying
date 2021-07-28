@@ -29,8 +29,6 @@ const OrderScreen = {
         e.preventDefault();
         const data = await buyingInfo({
           orderId: document.getElementById(`orderId${index}`).value,
-          link: document.getElementById(`link${index}`).value,
-          originalprice: Number(document.getElementById(`ori_price${index}`).value),
           place: document.getElementById(`place${index}`).value,
           detail: document.getElementById(`detail${index}`).value,
           price: Number(document.getElementById(`price${index}`).value),
@@ -108,9 +106,9 @@ const OrderScreen = {
           }
         </td>
         <td>${item.quantity}</td>
-        <td id='ori_price${index}'>£${getBuyingInfo(order.order_id)}</td>  
+        <td id='ori_price${index}'>DB에서불러올값</td>  
         <td id='ref${index}${idx}'>${getInfo(item.product_no,index,idx)}</td>
-        <td id='link${index}'></td>
+        <td id='link${index}'>DB에서불러올값</td>
       </tr>
       <tr>
         <td>

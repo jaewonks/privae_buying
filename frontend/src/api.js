@@ -49,7 +49,7 @@ export const getBuyingInfo = async (id) => {
   }
 };
 
-export const buyingInfo = async ({orderId,link,originalprice,place,datail,price,date}) => {
+export const buyingInfo = async ({orderId,link,originalprice}) => {
   try {
     const response = await axios({
       url: `${apiUrl}/api/buyings/info`,

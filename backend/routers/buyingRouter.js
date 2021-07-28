@@ -9,7 +9,7 @@ router.post('/info', expressAsyncHandler(async (req,res) => {
   const link = req.body.link;
   const originalprice = req.body.originalprice;
   db.query(
-    'INSERT INTO privae_buyingifo (buying_orderId,buyinginfo_link,buyinginfo_originalprice) VALUES (?,?,?)',
+    'INSERT INTO privae_buyinginfo (buyinginfo_orderid,buyinginfo_link,buyinginfo_originalprice) VALUES (?,?,?)',
     [orderId,link,originalprice],
     (err, result) => {
       if (err) {
