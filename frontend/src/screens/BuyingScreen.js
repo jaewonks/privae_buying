@@ -1,29 +1,71 @@
-import { getOrders, getProduct } from '../api.js'
+import { getOrders, getProduct, buyingInfo, getBuyingInfo } from '../api.js'
 import { getCurrentDate } from '../config.js'
+import { toggleStatusBtn } from '../utils.js'
 
 const OrderScreen = {
   after_render: () => {
-    document.getElementById('completed')
-    .addEventListener('click', async () => {
-      const element = document.querySelector('.tr_container');
-      element.style.opacity = '0.2';
-    })
+    const statusBtns = document.getElementsByClassName('status');
+    Array.from(statusBtns).forEach((statusBtn, index) => {
+      statusBtn.addEventListener('click', () => {
+        toggleStatusBtn(statusBtn,index);
+      })
+    });
 
+    const hideBtns = document.getElementsByClassName('hide');
+    Array.from(hideBtns).forEach((hideBtn, index) => {
+      hideBtn.addEventListener('click', () => {
+        const element = document.querySelectorAll('.tr_container');
+        element[index].style.display = "none";
+      })
+    });
+
+    const saveBtns = document.getElementsByClassName('save');
+    Array.from(saveBtns).forEach((saveBtn, index) => {
+      const saveForm = document.getElementById(`form${index}`)
+      saveForm.addEventListener('submit', async (e) => {
+        if(saveBtn.textContent === '저장') {
+          saveBtn.textContent = '수정';
+        }
+        e.preventDefault();
+        const data = await buyingInfo({
+          orderId: document.getElementById(`orderId${index}`).value,
+          link: document.getElementById(`link${index}`).value,
+          originalprice: Number(document.getElementById(`ori_price${index}`).value),
+          place: document.getElementById(`place${index}`).value,
+          detail: document.getElementById(`detail${index}`).value,
+          price: Number(document.getElementById(`price${index}`).value),
+          date: document.getElementById(`date${index}`).value
+        })
+        console.log(data);
+        if(data.message) {
+          console.log(data.message)
+        }
+      })
+    });
   },
   render: async () => {
     const orderlist = await getOrders();
     const orderdata = orderlist.data.orders;
     const getCurDate = await getCurrentDate();
-    const getInfo = async (id, index) => {
+
+    const getBuyingInfo = async (id, index) => {
+      const data = await getBuyingInfo(id);
+      const link = data.link;
+      const originalprice = data.originalprice;
+      document.getElementById(`ori_price${index}`).innerText = originalprice;
+      document.getElementById(`link${index}`).innerText = link;
+    }; 
+    
+    const getInfo = async (id,index,idx) => {
       const data = await getProduct(id);
       const img = data.detail_image;
       const ref = data.model_name;
-      document.getElementById(`ref${index}`).innerText = ref;
-      document.getElementById(`img${index}`).src = img;
-    }; 
+      document.getElementById(`ref${index}${idx}`).innerText = ref
+      document.getElementById(`img${index}${idx}`).src = img
+    };
 
     return `
-    <div class = 'container'>
+    <div class='container'>
     <table class='buying' cellspacing="0" cellpadding="0">
     <thead>
       <tr>
@@ -47,47 +89,53 @@ const OrderScreen = {
     </thead>
     <tbody id='tbody'>
     ${orderdata?orderdata.map((order, index) => 
+      order.actual_order_amount.order_price_amount!=="0.00"?
+      order.items.map((item,idx) =>
       `<tbody class='tr_container'>
       <tr>
         <td rowspan="3">
-          <img id='img${index}' src='' width="120px">
+          <img id='img${index}${idx}' src='' width="120px">
         </td>
-        <td colspan="5">&nbsp;${order.items[0].product_name} (${order.order_id})</td>
+        <td colspan="5">&nbsp;${item.product_name} (${order.order_id})
+          <input type='hidden' id='orderId${index}' value='${order.order_id}'/>
+        </td>
       </tr>
       <tr>
         <td>
-          ${order.items[0].option_value
+          ${item.option_value
             .replaceAll(',','<br/>')
             .replaceAll('=','&emsp;')  
           }
         </td>
-        <td>${order.items[0].quantity}</td>
-        <td>£1280</td>  
-        <td id='ref${index}'>${getInfo(order.items[0].product_no, index)}</td>
-        <td><input type="text" class="lu_link" placeholder='루이비통 링크'/></td>
+        <td>${item.quantity}</td>
+        <td id='ori_price${index}'>£${getBuyingInfo(order.order_id)}</td>  
+        <td id='ref${index}${idx}'>${getInfo(item.product_no,index,idx)}</td>
+        <td id='link${index}'></td>
       </tr>
       <tr>
         <td>
-          <select>
-            <option>온라인</option>
-            <option>해로드</option>
-            <option>셀브릿지</option>
-            <option>본드스트릿</option>
-            <option>슬론</option>
-            <option>웨스트필드</option>
-            <option>뱅크</option>
+          <select name='place${index}' id='place${index}'>
+            <option value='1'>온라인</option>
+            <option value='2'>해로드</option>
+            <option value='3'>셀브릿지</option>
+            <option value='4'>본드스트릿</option>
+            <option value='5'>슬론</option>
+            <option value='6'>웨스트필드</option>
+            <option value='7'>뱅크</option>
           </select>
         </td>  
-        <td><input type="text" class="order_num" placeholder="오더넘버"/></td>
-        <td>£<input type="text" class="ori_price" /></td>
-        <td>${getCurDate}</td>
+        <td><input form='form${index}' type="text" name='detail${index}' id="detail${index}" placeholder="주문 상세 사항" /></td>
+        <td>£<input form='form${index}' type="text" name='price${index}' id="price${index}" placeholder="구매가격" /></td>
+        <td><input form='form${index}' type="text" name='date${index}' id="date${index}" value="${getCurDate}" /></td>
         <td>
-          <button type='button' id='completed'>구매완료</button>
-          <button type='button' id='hide'>숨기기</button> 
+          <button type='button' class='status'>바잉중</button>
+          <button form='form${index}' type='submit' class='save'>저장</button> 
+          <button type='button' class='hide'>숨기기</button> 
         </td>
       </tr>
       </tbody>
       `
+      ).join('\n'):''
       ).join('\n'):''} 
       </tbody>
       </table>

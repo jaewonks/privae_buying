@@ -11,3 +11,27 @@ export const rerender = async (component) => {
   await component.render();
   await component.after_render();
 }
+
+export const toggleStatusBtn = (statusBtn, index) => {
+  const element = document.querySelectorAll('.tr_container');
+  if(statusBtn.textContent === '바잉중') {
+    statusBtn.textContent = '구매완료';
+    element[index].style.opacity = '0.2';
+    //statusBtn.classList.add('clicked');
+  } else {
+    statusBtn.textContent = '바잉중'
+    element[index].style.opacity = '1';
+    //statusBtn.classList.remove('clicked');
+  }
+}
+
+export const toggleEditBtn = (editBtn, index) => {
+  const element = document.querySelectorAll('.tr_container');
+  if(editBtn.textContent === '저장') {
+    editBtn.textContent = '수정';
+    editBtn.classList.add('clicked');
+  } else {
+    editBtn.textContent = '수정'
+    editBtn.classList.remove('clicked');
+  }
+}

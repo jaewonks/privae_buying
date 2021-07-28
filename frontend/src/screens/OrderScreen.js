@@ -1,4 +1,5 @@
-import { getOrders, getProduct } from '../api.js'
+import { getOrders, getProduct, buyingInfo } from '../api.js'
+import { getCurrentDate } from '../config.js'
 
 const OrderScreen = {
   after_render: () => {
@@ -7,14 +8,36 @@ const OrderScreen = {
   render: async () => {
     const orderlist = await getOrders();
     const orderdata = orderlist.data.orders;
-    const getInfo = async (id, index) => {
+    const getCurDate = await getCurrentDate();
+    const getInfo = async (id,index,idx) => {
       const data = await getProduct(id);
       const img = data.detail_image;
       const ref = data.model_name;
-      document.getElementById(`ref${index}`).innerText = ref;
-      document.getElementById(`img${index}`).src = img;
-    }; 
-    
+      document.getElementById(`ref${index}${idx}`).innerText = ref
+      document.getElementById(`img${index}${idx}`).src = img
+    };
+
+    const saveBtns = document.getElementsByClassName('save');
+    Array.from(saveBtns).forEach((saveBtn, index) => {
+      const saveForm = document.getElementById(`form${index}`)
+      saveForm.addEventListener('submit', async (e) => {
+        if(saveBtn.textContent === '저장') {
+          saveBtn.textContent = '수정';
+        }
+        console.log('Clicked!')
+        e.preventDefault();
+        const data = await buyingInfo({
+          orderId: document.getElementById(`orderId${index}`).value,
+          link: document.getElementById(`link${index}`).value,
+          originalprice: Number(document.getElementById(`ori_price${index}`).value),
+        })
+        console.log(data);
+        if(data.message) {
+          console.log(data.message)
+        }
+      })
+    });
+
     return `
     <table class='order' cellspacing="0" cellpadding="0">
     <thead>
@@ -22,77 +45,128 @@ const OrderScreen = {
         <th>주문번호</th>
         <th>상품이미지</th>
         <th>주문상품명</th>
+        <th>Ref.</th>
         <th>색상/사이즈/세금납부</th>
         <th>수량</th>
         <th>판매가</th>
-        <th>수령인</th>
-        <th>수령인연락처</th>
-        <th>수령인주소</th>
-        <th>개인통관고유번호</th>
         <th>상태</th>
         <th>링크</th>
         <th>파운드원가</th>
-        <th>Ref.</th>
         <th>구매처</th>
         <th>오더넘버</th>
         <th>구매가격</th>
         <th>구매일자</th>
+        <th>수령인</th>
+        <th>수령인연락처</th>
+        <th>수령인주소</th>
+        <th>개인통관고유번호</th>
       </tr>
     </thead>
     <tbody id='tbody'>
     ${orderdata?orderdata.map((order, index) => 
+      order.actual_order_amount.order_price_amount!=="0.00"?
       `<tr>
-        <td>${order.order_id}</td>
-        <td><img id='img${index}' src='' width="120px"></td>
-        <td>${order.items[0].product_name}</td>
-        <td>${order.items[0].option_value
-          .replaceAll(',','<br/>')
-          .replaceAll('=','&emsp;')  
-        }
+        <td rowspan=${order.items.length}>${order.order_id}
+        <input type='hidden' id='orderId${index}' value='${order.order_id}'/>
         </td>
-        <td>${order.items[0].quantity}</td>
-        <td>${order.actual_order_amount.order_price_amount
-          .toString()
-          .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-          .replace('.00','')
-        }원</td>
-        <td>${order.billing_name}</td>
-        <td>${order.receivers[0].phone !== '--'?
-          order.receivers[0].phone:
-          order.receivers[0].cellphone}</td>
-        <td>${order.receivers[0].address_full}&emsp;${order.receivers[0].zipcode}
-        <td>${order.additional_order_info_list[0]?
-          order.additional_order_info_list[0].value:
-          order.receivers[0].clearance_information
-        }
-        </td>
-        <td>
-          <select>
-            <option>배송준비중</option>
-            <option>구매완료</option>
-            <option>배송중</option>
-            <option>배송완료</option>
-          </select>
-        </td>
-        <td><a href="https://uk.louisvuitton.com/eng-gb/products/luxembourg-trainers-nvprod2480029v#1A8J0X">https://uk.louisvuitton.com/eng-gb/products/luxembourg-trainers-nvprod2480029v#1A8J0X</a></td>
-        <td>£<input type="text" class="ori_price" /></td>
-        <td id='ref${index}'>${getInfo(order.items[0].product_no, index)}</td>
-        <td>
-          <select>
-            <option>온라인</option>
-            <option>해로드</option>
-            <option>셀브릿지</option>
-            <option>본드스트릿</option>
-            <option>슬론</option>
-            <option>웨스트필드</option>
-            <option>뱅크</option>
-          </select>
-        <td><input type="text" class="order_num" placeholder="오더넘버"/></td>
-        <td>£<input type="text" class="ori_price" /></td>
-        <td>13.07.2021</td>
-        <td><button>수정</button></td>
-      </tr>` 
-      ).join('\n'):''} 
+      ` +
+        order.items.map((item,idx) => 
+          idx===0? 
+          ` <td>
+              <form id='form${index}'></form>
+              <img id='img${index}' src='' width="120px">
+            </td>
+            <td>${item.product_name}</td>
+            <td id='ref${index}'>${getInfo(order.items[0].product_no,index,'')}</td>
+            <td>${item.option_value
+              .replaceAll(',','<br/>')
+              .replaceAll('=','&emsp;')  
+            }
+            </td>
+            <td>${item.quantity}</td>
+            <td>${(parseInt(item.product_price) + parseInt(item.option_price))
+              .toString()
+              .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+            }원</td>
+            <td>
+            <select>
+              <option>배송준비중</option>
+              <option>구매완료</option>
+              <option>배송중</option>
+              <option>배송완료</option>
+            </select>
+            </td>
+            <td><input form='form${index}' type="text" name="link${index}" id="link${index}" placeholder='공식사이트 링크' /></td>
+            <td>£<input type="text" class="ori_price" /></td>
+            <td>
+              <select name='place${index}' id='place${index}'>
+                <option value='1'>온라인</option>
+                <option value='2'>해로드</option>
+                <option value='3'>셀브릿지</option>
+                <option value='4'>본드스트릿</option>
+                <option value='5'>슬론</option>
+                <option value='6'>웨스트필드</option>
+                <option value='7'>뱅크</option>
+              </select>
+            <td><input form='form${index}' type="text" name='detail${index}' id="detail${index}" placeholder="주문 상세 사항" /></td>
+            <td>£<input form='form${index}' type="text" name='price${index}' id="price${index}" placeholder="구매가격" /></td>
+            <td><input form='form${index}' type="text" name='date${index}' id="date${index}" value="${getCurDate}" /></td>
+            <td rowspan=${order.items.length}>${order.billing_name}</td>
+            <td rowspan=${order.items.length}>${order.receivers[0].phone !== '--'?
+              order.receivers[0].phone:
+              order.receivers[0].cellphone}</td>
+            <td rowspan=${order.items.length}>${order.receivers[0].address_full}&emsp;${order.receivers[0].zipcode}
+            <td rowspan=${order.items.length}>${order.additional_order_info_list[0]?
+              order.additional_order_info_list[0].value:
+              order.receivers[0].clearance_information
+            }
+            </td>
+            <td rowspan=${order.items.length}><button form='form${index}' type='submit' class='save'>저장</button></td>
+          </tr>
+          ` :
+          ` <tr>
+            <td> 
+              <form id='form${index}${idx}'></form>
+              <img id='img${index}${idx}' src='' width="120px">
+            </td>
+            <td>${item.product_name}</td> <!--getInfo 부분 고쳐야함-->
+            <td id='ref${index}${idx}'>${getInfo(item.product_no, index, idx)}</td>
+            <td>${item.option_value
+              .replaceAll(',','<br/>')
+              .replaceAll('=','&emsp;')  
+            }
+            </td>
+            <td>${item.quantity}</td>
+            <td>${(Number(item.product_price)+Number(item.option_price))
+              .toString()
+              .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+            }원</td>
+            <td>
+            <select>
+              <option>배송준비중</option>
+              <option>구매완료</option>
+              <option>배송중</option>
+              <option>배송완료</option>
+            </select>
+            </td>
+            <td><input form='form${index}${idx}' type="text" name="link${index}${idx}" id="link${index}${idx}" placeholder='공식사이트 링크' /></td>
+            <td>£<input type="text" class="ori_price" /></td>
+            <td>
+              <select name='place${index}${idx}' id='place${index}${idx}'>
+                <option value='1'>온라인</option>
+                <option value='2'>해로드</option>
+                <option value='3'>셀브릿지</option>
+                <option value='4'>본드스트릿</option>
+                <option value='5'>슬론</option>
+                <option value='6'>웨스트필드</option>
+                <option value='7'>뱅크</option>
+              </select>
+            <td><input form='form${index}${idx}' type="text" name='detail${index}${idx}' id="detail${index}${idx}" placeholder="주문 상세 사항" /></td>
+            <td>£<input form='form${index}${idx}' type="text" name='price${index}${idx}' id="price${index}${idx}" placeholder="구매가격" /></td>
+            <td><input form='form${index}${idx}' type="text" name='date${index}${idx}' id="date${index}${idx}" value="${getCurDate}" /></td>
+          </tr>`
+          ).join('\n'):''
+        ).join('\n'):''} 
       </tbody>
       </table>
       <div class='container'>

@@ -10,11 +10,9 @@ const HomeScreen = {
     document.getElementById('buyingBtn')
     .addEventListener('click', () => {
       document.location.hash = '/buying';
-      console.log('buying clicked!'); 
     })
   },
   render: async () => {
-
     return `
     <div class='home container'>
       <div><img src='../images/top_logo.png' style='width:100px'></div>

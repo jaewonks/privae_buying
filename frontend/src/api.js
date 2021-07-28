@@ -27,12 +27,49 @@ export const getProduct = async (id) => {
       throw new Error(reponse.message)
     } 
     return response.data.product;
-    //return response.data.product.model_name;
   } catch (err) {
     console.log(err);
     return { error: response.message || err.message }
   }
 };
 
+export const getBuyingInfo = async (id) => {
+  try {
+    const response = await axios({
+      url: `${apiUrl}/api/buyings/info/${id}`,
+      method: 'GET',
+    })
+    if(!response || response.statusText !== 'OK') {
+      throw new Error(reponse.message)
+    } 
+    return response;
+  } catch (err) {
+    console.log(err);
+    return { error: response.message || err.message }
+  }
+};
 
+export const buyingInfo = async ({orderId,link,originalprice,place,datail,price,date}) => {
+  try {
+    const response = await axios({
+      url: `${apiUrl}/api/buyings/info`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      data: {
+        orderId,
+        link,
+        originalprice,
+      }
+    })
 
+    if(!response || response.statusText !== 'OK') {
+      throw new Error(reponse.data.message)
+    } 
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return { error: response.data.message || err.message }
+  }
+};

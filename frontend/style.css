@@ -34,12 +34,16 @@ table {
 thead {
   background-color: #727DF4;
 }
-
-table.order thead tr th:nth-child(14), 
-table.order thead tr th:nth-child(15), 
-table.order thead tr th:nth-child(16),
-table.order thead tr th:nth-child(17) {
+ 
+table.order thead tr th:nth-child(9), 
+table.order thead tr th:nth-child(10) {
   background-color: yellow;
+}
+
+table.order thead tr th:nth-child(11), 
+table.order thead tr th:nth-child(12),
+table.order thead tr th:nth-child(13) {
+  background-color: greenyellow;
 }
 
 table.order thead tr th:nth-child(4) {
