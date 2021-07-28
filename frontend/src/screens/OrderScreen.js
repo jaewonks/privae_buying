@@ -4,10 +4,11 @@ import { getCurrentDate } from '../config.js'
 const OrderScreen = {
   after_render: () => {
     const saveBtns = document.getElementsByClassName('save');
-    Array.from(saveBtns).forEach((saveBtn, index) => {
+    Array.from(saveBtns).map((saveBtn,index) => {
       const saveForm = document.getElementById(`form${index}`)
-      saveForm.addEventListener('submit', async (e) => {
+      saveForm?saveForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        console.log('clicked!')
         if(saveBtn.textContent === '저장') {
           saveBtn.textContent = '수정';
         }
@@ -16,12 +17,12 @@ const OrderScreen = {
           link: document.getElementById(`link${index}`).value,
           originalprice: Number(document.getElementById(`ori_price${index}`).value),
         })
-        console.log(data);
         if(data.message) {
           console.log(data.message)
         }
-      })
+      }):''
     });
+
   },
   render: async () => {
     const orderlist = await getOrders();
