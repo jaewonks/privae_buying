@@ -24,9 +24,9 @@ router.post('/info', expressAsyncHandler(async (req,res) => {
   )
 }));
 
-router.post('/info/:id', expressAsyncHandler(async (req,res) => {
+router.get('/info/:id', expressAsyncHandler(async (req,res) => {
   db.query(
-    'INSERT INTO privae_buying WHERE buying_orderId = ?', req.params.id,
+    'SELECT * FROM privae_buyinginfo WHERE buyinginfo_orderid = ?', req.params.id,
     (err, result) => {
       if (err) {
         console.log({ error: err });

@@ -42,7 +42,8 @@ table.order thead tr th:nth-child(10) {
 
 table.order thead tr th:nth-child(11), 
 table.order thead tr th:nth-child(12),
-table.order thead tr th:nth-child(13) {
+table.order thead tr th:nth-child(13),
+table.order thead tr th:nth-child(14) {
   background-color: greenyellow;
 }
 

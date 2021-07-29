@@ -42,7 +42,7 @@ export const getBuyingInfo = async (id) => {
     if(!response || response.statusText !== 'OK') {
       throw new Error(reponse.message)
     } 
-    return response;
+    return response.data;
   } catch (err) {
     console.log(err);
     return { error: response.message || err.message }

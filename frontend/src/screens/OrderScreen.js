@@ -25,12 +25,12 @@ const OrderScreen = {
         }
       })
     });
-
   },
   render: async () => {
     const orderlist = await getOrders();
     const orderdata = orderlist.data.orders;
     const getCurDate = await getCurrentDate();
+
     const getInfo = async (id,index,idx) => {
       const data = await getProduct(id);
       const img = data.detail_image;
@@ -43,6 +43,11 @@ const OrderScreen = {
       document.getElementById(`img${index}`).src = img
       }
     };
+
+
+    const getOrder = () => {
+      
+    }
 
     return `
     <table class='order' cellspacing="0" cellpadding="0">
@@ -59,7 +64,7 @@ const OrderScreen = {
         <th>링크</th>
         <th>파운드원가</th>
         <th>구매처</th>
-        <th>오더넘버</th>
+        <th>구매상세</th>
         <th>구매가격</th>
         <th>구매일자</th>
         <th>수령인</th>
@@ -116,9 +121,9 @@ const OrderScreen = {
                 <option value='6'>웨스트필드</option>
                 <option value='7'>뱅크</option>
               </select>
-            <td><input type="text" id="detail${index}" placeholder="주문 상세 사항" /></td>
-            <td>£<input type="text" id="price${index}" placeholder="구매가격" /></td>
-            <td><input type="text" id="date${index}" value="${getCurDate}" /></td>
+            <td id="detail${index}">buyingDB에서가져올값</td>
+            <td id="price${index}">buyingDB에서가져올값</td>
+            <td id="date${index}">buyingDB에서가져올값</td>
             <td rowspan=${order.items.length}>${order.billing_name}</td>
             <td rowspan=${order.items.length}>${order.receivers[0].phone !== '--'?
               order.receivers[0].phone:

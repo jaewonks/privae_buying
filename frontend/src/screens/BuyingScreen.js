@@ -46,14 +46,6 @@ const OrderScreen = {
     const orderdata = orderlist.data.orders;
     const getCurDate = await getCurrentDate();
 
-    const getBuyingInfo = async (id, index) => {
-      const data = await getBuyingInfo(id);
-      const link = data.link;
-      const originalprice = data.originalprice;
-      document.getElementById(`ori_price${index}`).innerText = originalprice;
-      document.getElementById(`link${index}`).innerText = link;
-    }; 
-    
     const getInfo = async (id,index,idx) => {
       const data = await getProduct(id);
       const img = data.detail_image;
@@ -61,6 +53,18 @@ const OrderScreen = {
       document.getElementById(`ref${index}_${idx}`).innerText = ref
       document.getElementById(`img${index}_${idx}`).src = img  
     };
+
+    const getBuying = async (id, index, idx) => {
+      const data = await getBuyingInfo(id);
+      const link = data[0].buyinginfo_link;
+      const originalprice = data[0].buyinginfo_originalprice;
+      console.log(link,originalprice)
+      document.getElementById(`ori_price${index}_${idx}`).innerText = 
+        '£'+originalprice
+        .toString()
+        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+      document.getElementById(`link${index}_${idx}`).innerText = link;
+    }; 
 
     return `
     <div class='container'>
@@ -106,13 +110,13 @@ const OrderScreen = {
           }
         </td>
         <td>${item.quantity}</td>
-        <td id='ori_price${index}'>DB에서불러올값</td>  
+        <td id='ori_price${index}_${idx}'>${getBuying(order.order_id,index,idx)}</td>  
         <td id='ref${index}_${idx}'>${getInfo(item.product_no,index,idx)}</td>
-        <td id='link${index}'>DB에서불러올값</td>
+        <td id='link${index}_${idx}'></td>
       </tr>
       <tr>
         <td>
-          <select name='place${index}' id='place${index}'>
+          <select name='place${index}_${idx}' id='place${index}_${idx}'>
             <option value='1'>온라인</option>
             <option value='2'>해로드</option>
             <option value='3'>셀브릿지</option>
@@ -122,9 +126,9 @@ const OrderScreen = {
             <option value='7'>뱅크</option>
           </select>
         </td>  
-        <td><input form='form${index}' type="text" name='detail${index}' id="detail${index}" placeholder="주문 상세 사항" /></td>
-        <td>£<input form='form${index}' type="text" name='price${index}' id="price${index}" placeholder="구매가격" /></td>
-        <td><input form='form${index}' type="text" name='date${index}' id="date${index}" value="${getCurDate}" /></td>
+        <td><input form='form${index}' type="text" name='detail${index}_${idx}' id="detail${index}_${idx}" placeholder="주문 상세 사항" /></td>
+        <td>£<input form='form${index}' type="text" name='price${index}_${idx}' id="price${index}_${idx}" placeholder="구매가격" /></td>
+        <td><input form='form${index}' type="text" name='date${index}_${idx}' id="date${index}_${idx}" value="${getCurDate}" /></td>
         <td>
           <button type='button' class='status'>바잉중</button>
           <button form='form${index}' type='submit' class='save'>저장</button> 
