@@ -58,8 +58,8 @@ const OrderScreen = {
       const data = await getProduct(id);
       const img = data.detail_image;
       const ref = data.model_name;
-      document.getElementById(`ref${index}${idx}`).innerText = ref
-      document.getElementById(`img${index}${idx}`).src = img
+      document.getElementById(`ref${index}_${idx}`).innerText = ref
+      document.getElementById(`img${index}_${idx}`).src = img  
     };
 
     return `
@@ -92,7 +92,7 @@ const OrderScreen = {
       `<tbody class='tr_container'>
       <tr>
         <td rowspan="3">
-          <img id='img${index}${idx}' src='' width="120px">
+          <img id='img${index}_${idx}' src='' width="120px">
         </td>
         <td colspan="5">&nbsp;${item.product_name} (${order.order_id})
           <input type='hidden' id='orderId${index}' value='${order.order_id}'/>
@@ -107,7 +107,7 @@ const OrderScreen = {
         </td>
         <td>${item.quantity}</td>
         <td id='ori_price${index}'>DB에서불러올값</td>  
-        <td id='ref${index}${idx}'>${getInfo(item.product_no,index,idx)}</td>
+        <td id='ref${index}_${idx}'>${getInfo(item.product_no,index,idx)}</td>
         <td id='link${index}'>DB에서불러올값</td>
       </tr>
       <tr>
