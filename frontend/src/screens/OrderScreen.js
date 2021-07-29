@@ -4,23 +4,26 @@ import { getCurrentDate } from '../config.js'
 const OrderScreen = {
   after_render: () => {
     const saveBtns = document.getElementsByClassName('save');
-    Array.from(saveBtns).map((saveBtn,index) => {
-      const saveForm = document.getElementById(`form${index}`)
-      saveForm?saveForm.addEventListener('submit', async (e) => {
+      Array.from(saveBtns).forEach((saveBtn,index) => {
+      const forms = document.getElementsByTagName('form');
+      const saveForm = forms[index];
+      const order = Number(saveForm.id.replace('form',''));
+      console.log(saveBtn,index,saveForm);
+      saveForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         console.log('clicked!')
         if(saveBtn.textContent === '저장') {
           saveBtn.textContent = '수정';
         }
         const data = await buyingInfo({
-          orderId: document.getElementById(`orderId${index}`).value,
-          link: document.getElementById(`link${index}`).value,
-          originalprice: Number(document.getElementById(`ori_price${index}`).value),
+          orderId: document.getElementById(`orderId${order}`).value,
+          link: document.getElementById(`link${order}`).value,
+          originalprice: Number(document.getElementById(`ori_price${order}`).value),
         })
         if(data.message) {
           console.log(data.message)
         }
-      }):''
+      })
     });
 
   },
@@ -32,8 +35,13 @@ const OrderScreen = {
       const data = await getProduct(id);
       const img = data.detail_image;
       const ref = data.model_name;
-      document.getElementById(`ref${index}${idx}`).innerText = ref
-      document.getElementById(`img${index}${idx}`).src = img
+      if(idx) {
+        document.getElementById(`ref${index}_${idx}`).innerText = ref
+        document.getElementById(`img${index}_${idx}`).src = img  
+      } else {
+      document.getElementById(`ref${index}`).innerText = ref
+      document.getElementById(`img${index}`).src = img
+      }
     };
 
     return `
@@ -74,7 +82,7 @@ const OrderScreen = {
               <img id='img${index}' src='' width="120px">
             </td>
             <td>${item.product_name}</td>
-            <td id='ref${index}'>${getInfo(order.items[0].product_no,index,'')}</td>
+            <td id='ref${index}'>${getInfo(order.items[0].product_no,index)}</td>
             <td>${item.option_value
               .replaceAll(',','<br/>')
               .replaceAll('=','&emsp;')  
@@ -93,7 +101,10 @@ const OrderScreen = {
               <option>배송완료</option>
             </select>
             </td>
-            <td><form id='form${index}'></form><input form='form${index}' type="text" name="link${index}" id="link${index}" placeholder='공식사이트 링크' /></td>
+            <td>
+              <form id='form${index}'></form>
+              <input form='form${index}' type="text" name="link${index}" id="link${index}" placeholder='공식사이트 링크' />
+              </td>
             <td>£<input form='form${index}' type="text" name="ori_price${index}" id="ori_price${index}" /></td>
             <td>
               <select id='place${index}'>
@@ -125,11 +136,10 @@ const OrderScreen = {
           ` :
           ` <tr>
             <td> 
-              <form id='form${index}${idx}'></form>
-              <img id='img${index}${idx}' src='' width="120px">
+              <img id='img${index}_${idx}' src='' width="120px">
             </td>
             <td>${item.product_name}</td> <!--getInfo 부분 고쳐야함-->
-            <td id='ref${index}${idx}'>${getInfo(item.product_no, index, idx)}</td>
+            <td id='ref${index}_${idx}'>${getInfo(item.product_no, index, idx)}</td>
             <td>${item.option_value
               .replaceAll(',','<br/>')
               .replaceAll('=','&emsp;')  
@@ -148,10 +158,10 @@ const OrderScreen = {
               <option>배송완료</option>
             </select>
             </td>
-            <td><input form='form${index}${idx}' type="text" name="link${index}${idx}" id="link${index}${idx}" placeholder='공식사이트 링크' /></td>
-            <td>£<input type="text" class="ori_price" /></td>
+            <td><input type="text" id="link${index}_${idx}" placeholder='공식사이트 링크' /></td>
+            <td>£<input type="text" id="ori_price${index}_${idx}" /></td>
             <td>
-              <select name='place${index}${idx}' id='place${index}${idx}'>
+              <select id='place${index}_${idx}'>
                 <option value='1'>온라인</option>
                 <option value='2'>해로드</option>
                 <option value='3'>셀브릿지</option>
@@ -160,9 +170,9 @@ const OrderScreen = {
                 <option value='6'>웨스트필드</option>
                 <option value='7'>뱅크</option>
               </select>
-            <td><input form='form${index}${idx}' type="text" name='detail${index}${idx}' id="detail${index}${idx}" placeholder="주문 상세 사항" /></td>
-            <td>£<input form='form${index}${idx}' type="text" name='price${index}${idx}' id="price${index}${idx}" placeholder="구매가격" /></td>
-            <td><input form='form${index}${idx}' type="text" name='date${index}${idx}' id="date${index}${idx}" value="${getCurDate}" /></td>
+            <td><input type="text" id="detail${index}_${idx}" placeholder="주문 상세 사항" /></td>
+            <td>£<input type="text" id="price${index}_${idx}" placeholder="구매가격" /></td>
+            <td><input type="text" id="date${index}_${idx}" value="${getCurDate}" /></td>
           </tr>`
           ).join('\n'):''
         ).join('\n'):''} 
