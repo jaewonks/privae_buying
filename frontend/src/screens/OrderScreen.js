@@ -8,10 +8,9 @@ const OrderScreen = {
       const forms = document.getElementsByTagName('form');
       const saveForm = forms[index];
       const order = Number(saveForm.id.replace('form',''));
-      console.log(saveBtn,index,saveForm);
+      //(saveBtn,index,saveForm);
       saveForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        console.log('clicked!')
         if(saveBtn.textContent === '저장') {
           saveBtn.textContent = '수정';
         }
@@ -44,10 +43,22 @@ const OrderScreen = {
       }
     };
 
-
-    const getOrder = async (id) => {
+    const getOrderingInfo = async (id,index,idx) => {
       const data = await getOrderInfo(id);
-      console.log(data);
+      console.log(data[0]);
+      const place = data[0].orderinfo_place;
+      const detail = data[0].orderinfo_detail;
+      const price = data[0].orderinfo_price;
+      const date = data[0].orderinfo_date;
+
+      document.getElementById(`place${index}`).value = place;
+      document.getElementById(`detail${index}`).innerText = detail;
+      document.getElementById(`price${index}`).innerText = 
+        '£'+price
+        .toString()
+        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+      document.getElementById(`date${index}`).innerText = date;
+
     }; 
 
     return `
@@ -122,7 +133,7 @@ const OrderScreen = {
                 <option value='6'>웨스트필드</option>
                 <option value='7'>뱅크</option>
               </select>
-            <td id="detail${index}">${getOrder(order.order_id,index,idx)}</td>
+            <td id="detail${index}">${getOrderingInfo(order.order_id,index,idx)}</td>
             <td id="price${index}">buyingDB에서가져올값</td>
             <td id="date${index}">buyingDB에서가져올값</td>
             <td rowspan=${order.items.length}>${order.billing_name}</td>

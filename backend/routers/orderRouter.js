@@ -29,7 +29,7 @@ router.post('/info', expressAsyncHandler(async (req,res) => {
 
 router.get('/info/:id', expressAsyncHandler(async (req,res) => {
   db.query(
-    'SELECT * FROM privae_buyinginfo WHERE buyinginfo_orderid = ?', req.params.id,
+    'SELECT * FROM privae_orderinfo WHERE orderinfo_orderid = ?', req.params.id,
     (err, result) => {
       if (err) {
         console.log({ error: err });

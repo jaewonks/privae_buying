@@ -100,3 +100,19 @@ export const orderInfo = async ({orderId,place,detail,price,date}) => {
     return { error: response.data.message || err.message }
   }
 }
+
+export const getOrderInfo = async (id) => {
+  try {
+    const response = await axios({
+      url: `${apiUrl}/api/orderings/info/${id}`,
+      method: 'GET',
+    })
+    if(!response || response.statusText !== 'OK') {
+      throw new Error(reponse.message)
+    } 
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return { error: response.message || err.message }
+  }
+};
