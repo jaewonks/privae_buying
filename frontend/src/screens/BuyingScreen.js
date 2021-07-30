@@ -1,4 +1,4 @@
-import { getOrders, getProduct, buyingInfo, getBuyingInfo } from '../api.js'
+import { getOrders, getProduct, orderInfo, getBuyingInfo } from '../api.js'
 import { getCurrentDate } from '../config.js'
 import { toggleStatusBtn } from '../utils.js'
 
@@ -18,23 +18,25 @@ const OrderScreen = {
         element[index].style.display = "none";
       })
     });
-
+    
     const saveBtns = document.getElementsByClassName('save');
-    Array.from(saveBtns).forEach((saveBtn, index) => {
-      const saveForm = document.getElementById(`form${index}`)
+    Array.from(saveBtns).forEach((saveBtn, index) => { 
+      const forms = document.getElementsByTagName('form');
+      const saveForm = forms[index];
+      const order = saveForm.id.replace('form','');
+      //console.log(saveForm, saveBtn, order, index);
       saveForm.addEventListener('submit', async (e) => {
         if(saveBtn.textContent === '저장') {
           saveBtn.textContent = '수정';
         }
         e.preventDefault();
-        const data = await buyingInfo({
-          orderId: document.getElementById(`orderId${index}`).value,
-          place: document.getElementById(`place${index}`).value,
-          detail: document.getElementById(`detail${index}`).value,
-          price: Number(document.getElementById(`price${index}`).value),
-          date: document.getElementById(`date${index}`).value
+        const data = await orderInfo({
+          orderId: document.getElementById(`orderId${order}`).value,
+          place: document.getElementById(`place${order}`).value,
+          detail: document.getElementById(`detail${order}`).value,
+          price: Number(document.getElementById(`price${order}`).value),
+          date: document.getElementById(`date${order}`).value
         })
-        console.log(data);
         if(data.message) {
           console.log(data.message)
         }
@@ -58,7 +60,6 @@ const OrderScreen = {
       const data = await getBuyingInfo(id);
       const link = data[0].buyinginfo_link;
       const originalprice = data[0].buyinginfo_originalprice;
-      console.log(link,originalprice)
       document.getElementById(`ori_price${index}_${idx}`).innerText = 
         '£'+originalprice
         .toString()
@@ -99,7 +100,7 @@ const OrderScreen = {
           <img id='img${index}_${idx}' src='' width="120px">
         </td>
         <td colspan="5">&nbsp;${item.product_name} (${order.order_id})
-          <input type='hidden' id='orderId${index}' value='${order.order_id}'/>
+          <input type='hidden' id='orderId${index}_${idx}' value='${order.order_id}'/>
         </td>
       </tr>
       <tr>
@@ -116,7 +117,8 @@ const OrderScreen = {
       </tr>
       <tr>
         <td>
-          <select name='place${index}_${idx}' id='place${index}_${idx}'>
+          <form id='form${index}_${idx}'></form>
+          <select id='place${index}_${idx}'>
             <option value='1'>온라인</option>
             <option value='2'>해로드</option>
             <option value='3'>셀브릿지</option>
@@ -126,12 +128,12 @@ const OrderScreen = {
             <option value='7'>뱅크</option>
           </select>
         </td>  
-        <td><input form='form${index}' type="text" name='detail${index}_${idx}' id="detail${index}_${idx}" placeholder="주문 상세 사항" /></td>
-        <td>£<input form='form${index}' type="text" name='price${index}_${idx}' id="price${index}_${idx}" placeholder="구매가격" /></td>
-        <td><input form='form${index}' type="text" name='date${index}_${idx}' id="date${index}_${idx}" value="${getCurDate}" /></td>
+        <td><input form='form${index}_${idx}' type="text" name='detail${index}_${idx}' id="detail${index}_${idx}" placeholder="주문 상세 사항" /></td>
+        <td>£<input form='form${index}_${idx}' type="text" name='price${index}_${idx}' id="price${index}_${idx}" placeholder="구매가격" /></td>
+        <td><input form='form${index}_${idx}' type="text" name='date${index}_${idx}' id="date${index}_${idx}" value="${getCurDate}" /></td>
         <td>
           <button type='button' class='status'>바잉중</button>
-          <button form='form${index}' type='submit' class='save'>저장</button> 
+          <button form='form${index}_${idx}' type='submit' class='save'>저장</button> 
           <button type='button' class='hide'>숨기기</button> 
         </td>
       </tr>

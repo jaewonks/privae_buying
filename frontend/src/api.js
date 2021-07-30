@@ -73,3 +73,30 @@ export const buyingInfo = async ({orderId,link,originalprice}) => {
     return { error: response.data.message || err.message }
   }
 };
+
+export const orderInfo = async ({orderId,place,detail,price,date}) => {
+  try {
+    const response = await axios({
+      url: `${apiUrl}/api/orderings/info`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      data: {
+        orderId,
+        place,
+        detail,
+        price,
+        date
+      }
+    })
+
+    if(!response || response.statusText !== 'OK') {
+      throw new Error(reponse.data.message)
+    } 
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return { error: response.data.message || err.message }
+  }
+}

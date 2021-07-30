@@ -1,4 +1,4 @@
-import { getOrders, getProduct, buyingInfo } from '../api.js'
+import { getOrders, getProduct, buyingInfo, getOrderInfo } from '../api.js'
 import { getCurrentDate } from '../config.js'
 
 const OrderScreen = {
@@ -45,9 +45,10 @@ const OrderScreen = {
     };
 
 
-    const getOrder = () => {
-      
-    }
+    const getOrder = async (id) => {
+      const data = await getOrderInfo(id);
+      console.log(data);
+    }; 
 
     return `
     <table class='order' cellspacing="0" cellpadding="0">
@@ -121,7 +122,7 @@ const OrderScreen = {
                 <option value='6'>웨스트필드</option>
                 <option value='7'>뱅크</option>
               </select>
-            <td id="detail${index}">buyingDB에서가져올값</td>
+            <td id="detail${index}">${getOrder(order.order_id,index,idx)}</td>
             <td id="price${index}">buyingDB에서가져올값</td>
             <td id="date${index}">buyingDB에서가져올값</td>
             <td rowspan=${order.items.length}>${order.billing_name}</td>

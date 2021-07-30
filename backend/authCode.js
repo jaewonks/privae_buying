@@ -3,7 +3,7 @@ const request = require('request');
 const mallid = 'londonlabel';
 const code = 'ltYI34QZDF9ihcjDlNeozE';
 const redirect_uri = 'https://londonlabel.cafe24.com';
-const refresh_token = '1eXIPfJ3E0GfFyzP5mA3IV';
+const refresh_token = 'pFlS4qmVPFeIVCX1s6nwpC';
 
 const client_id = '3Y6Yey8eI0rmOmXm3jQv6A';
 const client_secret = '257Y7tGIC9lvjt3agIev2A';

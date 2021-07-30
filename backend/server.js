@@ -3,6 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import config from './config.js';
 import buyingRouter from './routers/buyingRouter.js';
+import orderRouter from './routers/orderRouter.js';
 import mysql from 'mysql';
  
 export const db = mysql.createConnection({
@@ -67,6 +68,7 @@ app.use('/api/buying/:id', (req, res) => {
 })
 
 app.use('/api/buyings', buyingRouter);
+app.use('/api/orderings', orderRouter);
 
 app.use('/api/auth/token', (req, res) => {
   const refresh_token = '1z1LWX9zFRInvYd1PXIhSC';
