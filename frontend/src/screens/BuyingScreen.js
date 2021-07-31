@@ -1,4 +1,4 @@
-import { getOrders, getProduct, orderInfo, getBuyingInfo } from '../api.js'
+import { getOrders, getProduct, orderInfo, getBuyingInfo, getAuth } from '../api.js'
 import { getCurrentDate } from '../config.js'
 import { toggleStatusBtn } from '../utils.js'
 
@@ -46,6 +46,24 @@ const OrderScreen = {
   render: async () => {
     const orderlist = await getOrders();
     const orderdata = orderlist.data.orders;
+    console.log(orderlist.data);
+    if(orderlist.data.error.message === "access_token time expired. (invalid_token)") {
+      console.log('토큰 갱신1')
+      const data = await getAuth();
+      console.log(data);
+    }
+
+    if(orderlist.data.error.message === "Invalid access_token (invalid_token)") {
+      console.log('토큰 갱신2')
+      const data = await getAuth();
+      console.log(data);
+
+      const setTokens = (data) => {
+        window.localStorage.setItem("access_token", data.access_token);
+        window.localStorage.setItem("refresh_token", data.refresh_token);
+      };
+      setTokens(data);
+    }
     const getCurDate = await getCurrentDate();
 
     const getInfo = async (id,index,idx) => {

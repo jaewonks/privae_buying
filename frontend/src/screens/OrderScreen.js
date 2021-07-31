@@ -45,11 +45,11 @@ const OrderScreen = {
 
     const getOrderingInfo = async (id,index,idx) => {
       const data = await getOrderInfo(id);
-      console.log(data[0]);
       const place = data[0].orderinfo_place;
       const detail = data[0].orderinfo_detail;
       const price = data[0].orderinfo_price;
-      const date = data[0].orderinfo_date;
+      const date = data[0].orderinfo_date.substring(0,10);
+
 
       document.getElementById(`place${index}`).value = place;
       document.getElementById(`detail${index}`).innerText = detail;
@@ -134,8 +134,8 @@ const OrderScreen = {
                 <option value='7'>뱅크</option>
               </select>
             <td id="detail${index}">${getOrderingInfo(order.order_id,index,idx)}</td>
-            <td id="price${index}">buyingDB에서가져올값</td>
-            <td id="date${index}">buyingDB에서가져올값</td>
+            <td id="price${index}"></td>
+            <td id="date${index}"></td>
             <td rowspan=${order.items.length}>${order.billing_name}</td>
             <td rowspan=${order.items.length}>${order.receivers[0].phone !== '--'?
               order.receivers[0].phone:

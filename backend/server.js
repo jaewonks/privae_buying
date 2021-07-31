@@ -21,7 +21,7 @@ db.connect((err) => {
 const app = express();
 const request = require("request");
 const mallid = 'londonlabel';
-const access_token = config.ACCESS_TOKEN;
+const access_token = '7bz7LjyNKdutvvMK3ow5oA';
 const getCurrentDate = () => {
   const date = new Date();
   const year = date.getFullYear().toString();
@@ -34,6 +34,34 @@ const getCurrentDate = () => {
 
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use('/api/auth/token', (req, res) => {
+  const refresh_token = 'eVrJB99uW6ANnE037ahDyG';
+  //const payload = `grant_type=authorization_code&code=${code}&redirect_uri=${redirect_uri}`;
+  const payload = `grant_type=refresh_token&refresh_token=${refresh_token}`;
+  const options = {
+    method: 'POST',
+    url: `https://${mallid}.cafe24api.com/api/v2/oauth/token`,
+    headers: {
+      'Authorization': `Basic M1k2WWV5OGVJMHJtT21YbTNqUXY2QToyNTdZN3RHSUM5bHZqdDNhZ0lldjJB`,
+      'Content-Type': "application/x-www-form-urlencoded"
+    },
+    body: payload,
+    json: true
+  };
+
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
+    const token = {
+      access_token: body.access_token,
+      refresh_token: body.refresh_token
+    }
+    
+    console.log(token)
+    res.send(body);
+  }); 
+})
+
 app.use('/api/orders', (req, res) => {
   const options = { 
     method: 'GET',
@@ -69,27 +97,6 @@ app.use('/api/buying/:id', (req, res) => {
 
 app.use('/api/buyings', buyingRouter);
 app.use('/api/orderings', orderRouter);
-
-app.use('/api/auth/token', (req, res) => {
-  const refresh_token = '1z1LWX9zFRInvYd1PXIhSC';
-  //const payload = `grant_type=authorization_code&code=${code}&redirect_uri=${redirect_uri}`;
-  const payload = `grant_type=refresh_token&refresh_token=${refresh_token}`;
-  const options = {
-    method: 'POST',
-    url: `https://${mallid}.cafe24api.com/api/v2/oauth/token`,
-    headers: {
-      'Authorization': `Basic M1k2WWV5OGVJMHJtT21YbTNqUXY2QToyNTdZN3RHSUM5bHZqdDNhZ0lldjJB`,
-      'Content-Type': "application/x-www-form-urlencoded"
-    },
-    body: payload,
-    json: true
-  };
-
-  request(options, function (error, response, body) {
-    if (error) throw new Error(error);
-    res.send(body);
-  }); 
-})
 
 app.listen(config.PORT, () => {
   console.log(`serve at http://localhost:${config.PORT}`)
