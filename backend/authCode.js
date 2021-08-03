@@ -1,7 +1,7 @@
 const request = require('request');
 
 const mallid = 'londonlabel';
-const code = 'KBSB0wdDCpMoFQD3NIvycC';
+const code = 'Umn1SIs2EBYuWLhwaTLgGC';
 const redirect_uri = 'https://londonlabel.cafe24.com';
 const refresh_token = 'pFlS4qmVPFeIVCX1s6nwpC';
 
@@ -29,15 +29,3 @@ request(options, function (error, response, body) {
 
 //https://londonlabel.cafe24api.com/api/v2/oauth/authorize?response_type=code&client_id=3Y6Yey8eI0rmOmXm3jQv6A&state=jaewonks&redirect_uri=https://londonlabel.cafe24.com&scope=mall.read_order,mall.read_product
 
-/*
-access_token: "rbvmRDDBH5ttaGNMEci3mC"
-client_id: "3Y6Yey8eI0rmOmXm3jQv6A"
-expires_at: "2021-07-31T20:00:21.000"
-issued_at: "2021-07-31T18:00:21.000"
-mall_id: "londonlabel"
-refresh_token: "KfcgwnoLUyoTBCfEdhuGND"
-refresh_token_expires_at: "2021-08-14T18:00:21.000"
-scopes: (2) ["mall.read_order", "mall.read_product"]
-user_id: "londonlabel"
-__proto__: Object
-*/

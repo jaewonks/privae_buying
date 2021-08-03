@@ -58,11 +58,14 @@ const OrderScreen = {
       const data = await getAuth();
       console.log(data);
 
-      const setTokens = (data) => {
-        window.localStorage.setItem("access_token", data.access_token);
-        window.localStorage.setItem("refresh_token", data.refresh_token);
+     const token = {
+       "access_token":data.access_token,
+       "refresh_token":data.refresh_token
       };
-      setTokens(data);
+      
+      if(!data.error) {
+        sessionStorage.setItem('token', JSON.stringify(token));
+      }
     }
     const getCurDate = await getCurrentDate();
 

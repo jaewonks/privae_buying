@@ -1,10 +1,15 @@
 import express from 'express';
+import expressSession from 'express-session';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import config from './config.js';
 import buyingRouter from './routers/buyingRouter.js';
 import orderRouter from './routers/orderRouter.js';
 import mysql from 'mysql';
+import static from 'serve-static';
+import errorHandler from 'errorhandler';
+
  
 export const db = mysql.createConnection({
   host: 'localhost' || '127.0.0.1',
@@ -21,7 +26,9 @@ db.connect((err) => {
 const app = express();
 const request = require("request");
 const mallid = 'londonlabel';
-const access_token = '7bz7LjyNKdutvvMK3ow5oA';
+let access_token = '7bz7LjyNKdutvvMK3ow5oA';
+let refresh_token = '19TfqcfcakuftvK3nTD19H';
+
 const getCurrentDate = () => {
   const date = new Date();
   const year = date.getFullYear().toString();
@@ -34,9 +41,7 @@ const getCurrentDate = () => {
 
 app.use(cors());
 app.use(bodyParser.json());
-
 app.use('/api/auth/token', (req, res) => {
-  const refresh_token = 'eVrJB99uW6ANnE037ahDyG';
   //const payload = `grant_type=authorization_code&code=${code}&redirect_uri=${redirect_uri}`;
   const payload = `grant_type=refresh_token&refresh_token=${refresh_token}`;
   const options = {
@@ -56,7 +61,7 @@ app.use('/api/auth/token', (req, res) => {
       access_token: body.access_token,
       refresh_token: body.refresh_token
     }
-    
+
     console.log(token)
     res.send(body);
   }); 
