@@ -45,20 +45,20 @@ const OrderScreen = {
 
     const getOrderingInfo = async (id,index,idx) => {
       const data = await getOrderInfo(id);
-      const place = data[0].orderinfo_place;
-      const detail = data[0].orderinfo_detail;
-      const price = data[0].orderinfo_price;
-      const date = data[0].orderinfo_date.substring(0,10);
-
-
-      document.getElementById(`place${index}`).value = place;
-      document.getElementById(`detail${index}`).innerText = detail;
-      document.getElementById(`price${index}`).innerText = 
-        '£'+price
-        .toString()
-        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-      document.getElementById(`date${index}`).innerText = date;
-
+      if(data.length > 0) {
+        const place = data[0].orderinfo_place;
+        const detail = data[0].orderinfo_detail;
+        const price = data[0].orderinfo_price;
+        const date = data[0].orderinfo_date.substring(0,10);
+     
+        document.getElementById(`place${index}`).value = place;
+        document.getElementById(`detail${index}`).innerText = detail;
+        document.getElementById(`price${index}`).innerText = 
+          '£'+price
+          .toString()
+          .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        document.getElementById(`date${index}`).innerText = date;
+      }   
     }; 
 
     return `

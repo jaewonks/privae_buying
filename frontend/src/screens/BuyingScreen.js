@@ -82,6 +82,7 @@ const OrderScreen = {
 
     const getBuying = async (id, index, idx) => {
       const data = await getBuyingInfo(id);
+      if(data.length > 0) {
       const link = data[0].buyinginfo_link;
       const originalprice = data[0].buyinginfo_originalprice;
       document.getElementById(`ori_price${index}_${idx}`).innerText = 
@@ -89,6 +90,7 @@ const OrderScreen = {
         .toString()
         .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
       document.getElementById(`link${index}_${idx}`).innerText = link;
+      };  
     }; 
 
     return `

@@ -7,8 +7,8 @@ import orderRouter from './routers/orderRouter.js';
 import mysql from 'mysql';
  
 export const db = mysql.createConnection({
-  host: 'localhost' || '127.0.0.1',
-  user: 'root',
+  host: 'us-cdbr-east-04.cleardb.com',
+  user: config.DB_USER,
   password: config.DB_PW, 
   database: config.DB_NAME
 })
