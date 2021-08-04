@@ -117,30 +117,10 @@ export const getOrderInfo = async (id) => {
   }
 };
 
-export const getAuth = async () => {
+export const getAuth = async (token) => {
   try {
     const response = await axios({
       url: `${apiUrl}/api/auth/token`,
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      }, 
-    })
-
-    if(!response || response.statusText !== 'OK') {
-      throw new Error(reponse.data.message)
-    } 
-    return response.data;
-  } catch (err) {
-    console.log(err);
-    return { error: response.data.message || err.message }
-  }
-}
-
-export const getReAuth = async (token) => {
-  try {
-    const response = await axios({
-      url: `${apiUrl}/api/refresh_token`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

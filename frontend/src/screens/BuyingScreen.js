@@ -1,4 +1,4 @@
-import { getOrders, getProduct, orderInfo, getBuyingInfo, getAuth, getReAuth } from '../api.js'
+import { getOrders, getProduct, orderInfo, getBuyingInfo, getAuth } from '../api.js'
 import { getCurrentDate } from '../config.js'
 import { toggleStatusBtn } from '../utils.js'
 
@@ -24,7 +24,6 @@ const OrderScreen = {
       const forms = document.getElementsByTagName('form');
       const saveForm = forms[index];
       const order = saveForm.id.replace('form','');
-      //console.log(saveForm, saveBtn, order, index);
       saveForm.addEventListener('submit', async (e) => {
         if(saveBtn.textContent === '저장') {
           saveBtn.textContent = '수정';
@@ -55,26 +54,18 @@ const OrderScreen = {
   
       if(orderlist.data.error.message === "Invalid access_token (invalid_token)") {
         console.log('토큰 갱신2')
-        const session_token = JSON.parse(sessionStorage.token);
-        const sess_refresh = session_token.refresh_token;
+        const sess_token = JSON.parse(sessionStorage.token);
+        const sess_refresh = sess_token.refresh_token;
         console.log(sess_refresh);
-        console.log(typeof(session_token.refresh_token));
-        /*const data = await getAuth();
-        console.log('data',data); 
-        if(!data.error) {
-          sessionStorage.setItem('token', JSON.stringify(tokenToSession(data)));
-        }*/
-  
-       const tokenToSession = (data) => {
-         return {
+
+        const data = await getAuth(sess_refresh);
+        const token = {
           "access_token":data.access_token,
           "refresh_token":data.refresh_token
-          }
-        };
-        const token_data = await getReAuth(session_token);
+        }
         console.log('token_datap',token_data);
         if(!token_data.error) {
-          sessionStorage.setItem('token', JSON.stringify(tokenToSession(token_data)));
+          sessionStorage.setItem('token', JSON.stringify(token));
         }
       }
     }
