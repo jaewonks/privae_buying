@@ -141,7 +141,7 @@ export const getReAuth = async (token) => {
   try {
     const response = await axios({
       url: `${apiUrl}/api/refresh_token`,
-      method: 'post',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       }, 

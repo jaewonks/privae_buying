@@ -22,7 +22,7 @@ const app = express();
 const request = require("request");
 const mallid = 'londonlabel';
 let access_token;
-let refresh_token = 'epO9daElOqua13pRU6u6EE';
+let refresh_token = 'X2rwNyMQHpQvC3IzAdkClB';
 
 const getCurrentDate = () => {
   const date = new Date();

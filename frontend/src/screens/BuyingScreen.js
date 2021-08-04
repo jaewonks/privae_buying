@@ -55,6 +55,10 @@ const OrderScreen = {
   
       if(orderlist.data.error.message === "Invalid access_token (invalid_token)") {
         console.log('토큰 갱신2')
+        const session_token = JSON.parse(sessionStorage.token);
+        const sess_refresh = session_token.refresh_token;
+        console.log(sess_refresh);
+        console.log(typeof(session_token.refresh_token));
         const data = await getAuth();
         console.log('data',data);
   
