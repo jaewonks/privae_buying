@@ -59,8 +59,11 @@ const OrderScreen = {
         const sess_refresh = session_token.refresh_token;
         console.log(sess_refresh);
         console.log(typeof(session_token.refresh_token));
-        const data = await getAuth();
-        console.log('data',data);
+        /*const data = await getAuth();
+        console.log('data',data); 
+        if(!data.error) {
+          sessionStorage.setItem('token', JSON.stringify(tokenToSession(data)));
+        }*/
   
        const tokenToSession = (data) => {
          return {
@@ -68,11 +71,7 @@ const OrderScreen = {
           "refresh_token":data.refresh_token
           }
         };
-        
-        if(!data.error) {
-          sessionStorage.setItem('token', JSON.stringify(tokenToSession(data)));
-        }
-        const token_data = await getReAuth(data);
+        const token_data = await getReAuth(session_token);
         console.log('token_datap',token_data);
         if(!token_data.error) {
           sessionStorage.setItem('token', JSON.stringify(tokenToSession(token_data)));
