@@ -5,7 +5,7 @@ export const getOrders = async () => {
   try {
     const response = await axios({
       url: `${apiUrl}/api/orders`,
-      method: 'GET',
+      method: 'get',
     })
     if(!response || response.statusText !== 'OK') {
       throw new Error(reponse.message)
@@ -21,7 +21,7 @@ export const getProduct = async (id) => {
   try {
     const response = await axios({
       url: `${apiUrl}/api/buying/${id}`,
-      method: 'GET',
+      method: 'get',
     })
     if(!response || response.statusText !== 'OK') {
       throw new Error(reponse.message)
@@ -37,7 +37,7 @@ export const getBuyingInfo = async (id) => {
   try {
     const response = await axios({
       url: `${apiUrl}/api/buyings/info/${id}`,
-      method: 'GET',
+      method: 'get',
     })
     if(!response || response.statusText !== 'OK') {
       throw new Error(reponse.message)
@@ -53,7 +53,7 @@ export const buyingInfo = async ({orderId,link,originalprice}) => {
   try {
     const response = await axios({
       url: `${apiUrl}/api/buyings/info`,
-      method: 'POST',
+      method: 'post',
       headers: {
         'Content-Type': 'application/json'
       }, 
@@ -78,7 +78,7 @@ export const orderInfo = async ({orderId,place,detail,price,date}) => {
   try {
     const response = await axios({
       url: `${apiUrl}/api/orderings/info`,
-      method: 'POST',
+      method: 'post',
       headers: {
         'Content-Type': 'application/json'
       }, 
@@ -105,7 +105,7 @@ export const getOrderInfo = async (id) => {
   try {
     const response = await axios({
       url: `${apiUrl}/api/orderings/info/${id}`,
-      method: 'GET',
+      method: 'get',
     })
     if(!response || response.statusText !== 'OK') {
       throw new Error(reponse.message)
@@ -121,7 +121,7 @@ export const getAuth = async () => {
   try {
     const response = await axios({
       url: `${apiUrl}/api/auth/token`,
-      method: 'POST',
+      method: 'post',
       headers: {
         'Content-Type': 'application/json'
       }, 
@@ -141,7 +141,7 @@ export const getReAuth = async (token) => {
   try {
     const response = await axios({
       url: `${apiUrl}/api/refresh_token`,
-      method: 'POST',
+      method: 'post',
       headers: {
         'Content-Type': 'application/json'
       }, 
