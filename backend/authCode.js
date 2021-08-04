@@ -1,7 +1,7 @@
 const request = require('request');
 
 const mallid = 'londonlabel';
-const code = 'Umn1SIs2EBYuWLhwaTLgGC';
+const code = '0gjCeHDrMKScVwfYYldRaF';
 const redirect_uri = 'https://londonlabel.cafe24.com';
 const refresh_token = 'pFlS4qmVPFeIVCX1s6nwpC';
 

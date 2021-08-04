@@ -136,6 +136,28 @@ export const getAuth = async () => {
     return { error: response.data.message || err.message }
   }
 }
+
+export const getReAuth = async (token) => {
+  try {
+    const response = await axios({
+      url: `${apiUrl}/api/refresh_token`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      data: token
+    })
+    console.log(token)
+
+    if(!response || response.statusText !== 'OK') {
+      throw new Error(reponse.data.message)
+    } 
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return { error: response.data.message || err.message }
+  }
+}
  
 const axiosApiInstance = axios.create();
  

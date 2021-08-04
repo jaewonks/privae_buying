@@ -1,4 +1,4 @@
-import { getOrders, getProduct, orderInfo, getBuyingInfo, getAuth } from '../api.js'
+import { getOrders, getProduct, orderInfo, getBuyingInfo, getAuth, getReAuth } from '../api.js'
 import { getCurrentDate } from '../config.js'
 import { toggleStatusBtn } from '../utils.js'
 
@@ -46,27 +46,36 @@ const OrderScreen = {
   render: async () => {
     const orderlist = await getOrders();
     const orderdata = orderlist.data.orders;
-    console.log(orderlist.data);
-    if(orderlist.data.error.message === "access_token time expired. (invalid_token)") {
-      console.log('토큰 갱신1')
-      const data = await getAuth();
-      console.log(data);
-    }
-
-    if(orderlist.data.error.message === "Invalid access_token (invalid_token)") {
-      console.log('토큰 갱신2')
-      const data = await getAuth();
-      console.log(data);
-
-     const token = {
-       "access_token":data.access_token,
-       "refresh_token":data.refresh_token
-      };
-      
-      if(!data.error) {
-        sessionStorage.setItem('token', JSON.stringify(token));
+    if(orderlist.data.error) {
+      if(orderlist.data.error.message === "access_token time expired. (invalid_token)") {
+        console.log('토큰 갱신1')
+        const data = await getAuth();
+        console.log(data);
+      }
+  
+      if(orderlist.data.error.message === "Invalid access_token (invalid_token)") {
+        console.log('토큰 갱신2')
+        const data = await getAuth();
+        console.log('data',data);
+  
+       const tokenToSession = (data) => {
+         return {
+          "access_token":data.access_token,
+          "refresh_token":data.refresh_token
+          }
+        };
+        
+        if(!data.error) {
+          sessionStorage.setItem('token', JSON.stringify(tokenToSession(data)));
+        }
+        const token_data = await getReAuth(data);
+        console.log('token_datap',token_data);
+        if(!token_data.error) {
+          sessionStorage.setItem('token', JSON.stringify(tokenToSession(token_data)));
+        }
       }
     }
+    
     const getCurDate = await getCurrentDate();
 
     const getInfo = async (id,index,idx) => {
