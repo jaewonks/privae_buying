@@ -6,6 +6,5 @@ export default {
   PORT: process.env.PORT || 5000,
   DB_NAME: process.env.DB_NAME,
   DB_PW: process.env.DB_PW,
-  ACCESS_TOKEN : process.env.ACCESS_TOKEN
 }
 

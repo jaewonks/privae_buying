@@ -106,6 +106,9 @@ export const getOrderInfo = async (id) => {
     const response = await axios({
       url: `${apiUrl}/api/orderings/info/${id}`,
       method: 'get',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
     if(!response || response.statusText !== 'OK') {
       throw new Error(reponse.message)
@@ -117,14 +120,31 @@ export const getOrderInfo = async (id) => {
   }
 };
 
-export const getAuth = async (token) => {
+export const getAuth = async () => {
   try {
     const response = await axios({
       url: `${apiUrl}/api/auth/token`,
-      method: 'POST',
+      method: 'post',
       headers: {
         'Content-Type': 'application/json'
-      }, 
+      }
+    })
+
+    if(!response || response.statusText !== 'OK') {
+      throw new Error(reponse.data.message)
+    } 
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return { error: response.data.message || err.message }
+  }
+}
+
+export const getReAuth = async (token) => {
+  try {
+    const response = await axios({
+      url: `${apiUrl}/api/refresh_token`,
+      method: 'POST', 
       data: token
     })
     console.log(token)

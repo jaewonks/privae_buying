@@ -14,12 +14,12 @@ export const rerender = async (component) => {
 
 export const toggleStatusBtn = (statusBtn, index) => {
   const element = document.querySelectorAll('.tr_container');
-  if(statusBtn.textContent === '바잉중') {
-    statusBtn.textContent = '구매완료';
+  if(statusBtn.textContent === '구매완료') {
+    statusBtn.textContent = '바잉중';
     element[index].style.opacity = '0.2';
     //statusBtn.classList.add('clicked');
   } else {
-    statusBtn.textContent = '바잉중'
+    statusBtn.textContent = '구매완료'
     element[index].style.opacity = '1';
     //statusBtn.classList.remove('clicked');
   }

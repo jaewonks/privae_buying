@@ -1,4 +1,4 @@
-import { getOrders, getProduct, orderInfo, getBuyingInfo, getAuth } from '../api.js'
+import { getOrders, getProduct, orderInfo, getBuyingInfo, getAuth, getReAuth } from '../api.js'
 import { getCurrentDate } from '../config.js'
 import { toggleStatusBtn } from '../utils.js'
 
@@ -54,18 +54,26 @@ const OrderScreen = {
   
       if(orderlist.data.error.message === "Invalid access_token (invalid_token)") {
         console.log('토큰 갱신2')
+        // 세션에 담긴 정보
         const sess_token = JSON.parse(sessionStorage.token);
-        const sess_refresh = sess_token.refresh_token;
-        console.log(sess_refresh);
-
-        const data = await getAuth(sess_refresh);
-        const token = {
-          "access_token":data.access_token,
-          "refresh_token":data.refresh_token
+        const tokenToSession = (data) => {
+          return {
+           "access_token":data.access_token,
+           "refresh_token":data.refresh_token
+           }
+         };
+        let data;
+        if(typeof sess_token === 'undefined') {
+          data = await getAuth(); 
+          console.log('data1',data);
+        } else { // 세션에 토큰이 있는 경우
+          data = sess_token.refresh_token;
+          console.log('data2',data);
         }
-        console.log('token_datap',token_data);
+        const token_data = await getReAuth(data);
+        console.log('token_data',token_data);
         if(!token_data.error) {
-          sessionStorage.setItem('token', JSON.stringify(token));
+          sessionStorage.setItem('token',JSON.stringify(tokenToSession(token_data)));
         }
       }
     }
@@ -88,8 +96,12 @@ const OrderScreen = {
       document.getElementById(`ori_price${index}_${idx}`).innerText = 
         '£'+originalprice
         .toString()
-        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-      document.getElementById(`link${index}_${idx}`).innerText = link;
+        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");    
+      const linkId = document.getElementById(`link${index}_${idx}`);
+      const a = document.createElement('a');
+      a.href = link; 
+      a.innerHTML = link;
+      linkId.appendChild(a);
       };  
     }; 
 
@@ -158,7 +170,7 @@ const OrderScreen = {
         <td>£<input form='form${index}_${idx}' type="text" name='price${index}_${idx}' id="price${index}_${idx}" placeholder="구매가격" /></td>
         <td><input form='form${index}_${idx}' type="text" name='date${index}_${idx}' id="date${index}_${idx}" value="${getCurDate}" /></td>
         <td>
-          <button type='button' class='status'>바잉중</button>
+          <button type='button' class='status'>구매완료</button>
           <button form='form${index}_${idx}' type='submit' class='save'>저장</button> 
           <button type='button' class='hide'>숨기기</button> 
         </td>
